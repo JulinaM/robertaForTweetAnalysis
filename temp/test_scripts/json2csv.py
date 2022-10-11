@@ -9,11 +9,11 @@ def do(filename):
     df = pd.DataFrame(data, columns=['id', 'created_at', 'text','lang'])  # change the feature in the columns from the original Twitter structure
     print(df.shape)
     # write to a new csv file
-    df.to_csv('./2020_01_01.csv')
+#     df.to_csv('./tweets_valid.csv')
 
 
 if __name__ == "__main__":
-    # filename = './2016_10_01.json'
+    # filename = './tweets_valid.csv'
 
     filename = sys.argv[1]
-    do("2020_01_01_TweetsEN.json")
+    do("temp/test_scripts/json2csv.py tweets_valid.json")
