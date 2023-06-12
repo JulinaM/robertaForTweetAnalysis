@@ -46,7 +46,7 @@ config = RobertaConfig(
 
 model = TweetModel(config, 2)
 model = model.to(device)
-model.load_state_dict(torch.load('/data/jmharja/projects/robertaForTweetAnalysis/finetune/checkpoint/best_ftc_model_state2023_02_20-03_15PM.bin'))
+model.load_state_dict(torch.load('/data/jmharja/projects/robertaForTweetAnalysis/finetune/checkpoint/best_ftc_model_state2023_02_20-03_15PM.bin', map_location=torch.device('cpu')))
 # model.load_state_dict(torch.load('/data/jmharja/projects/robertaForTweetAnalysis/finetune/checkpoint/best_ftc_model_state2023_05_31-05_42PM.bin'))
 
 
@@ -77,12 +77,10 @@ def predict():
 
         output = model(input_ids, attention_mask, token_type_ids)
         _, prediction = torch.max(output, dim=1)
-        print(f'Tweet text: {tweet}')
-        print(f'Substance type  : {prediction}')
-#         return jsonify({'result': result})
-        tensor_json = json.dumps(prediction.tolist())
-        return tweet + "--->" + tensor_json
-
+        prediction = prediction.item()
+        # print(f'Tweet text: {tweet}')
+        # print(f'Substance type  : {prediction}')
+        return json.dumps({"pred": prediction})
        
     
     
