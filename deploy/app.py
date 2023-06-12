@@ -12,13 +12,13 @@ import json
 MAX_LEN = 128
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
-tokenizer_folder = '/data/jmharja/projects/robertaForTweetAnalysis/output/oct2022/TokRoBERTa'
-tokenizer = RobertaTokenizerFast.from_pretrained(tokenizer_folder, max_len=MAX_LEN)
+root_folder = '/data/jmharja/projects/robertaForTweetAnalysis/'
+tokenizer = RobertaTokenizerFast.from_pretrained(root_folder +  'output/oct2022/TokRoBERTa', max_len=MAX_LEN)
 
 class TweetModel(RobertaPreTrainedModel):
     def __init__(self, conf, n_classes):
         super(TweetModel, self).__init__(conf)
-        self.roberta = transformers.RobertaModel.from_pretrained('/data/jmharja/projects/robertaForTweetAnalysis/output/oct2022/RoBERTaMLM/', config=conf)
+        self.roberta = transformers.RobertaModel.from_pretrained(root_folder + 'output/oct2022/RoBERTaMLM/', config=conf)
         self.drop_out = nn.Dropout(0.5)
         self.pre_classifier = torch.nn.Linear(768, 768)
         self.classifier = nn.Linear(768, n_classes)
@@ -46,7 +46,7 @@ config = RobertaConfig(
 
 model = TweetModel(config, 2)
 model = model.to(device)
-model.load_state_dict(torch.load('/data/jmharja/projects/robertaForTweetAnalysis/finetune/checkpoint/best_ftc_model_state2023_02_20-03_15PM.bin', map_location=torch.device('cpu')))
+model.load_state_dict(torch.load(root_folder + 'finetune/checkpoint/best_ftc_model_state2023_02_20-03_15PM.bin', map_location=torch.device('cpu')))
 # model.load_state_dict(torch.load('/data/jmharja/projects/robertaForTweetAnalysis/finetune/checkpoint/best_ftc_model_state2023_05_31-05_42PM.bin'))
 
 
