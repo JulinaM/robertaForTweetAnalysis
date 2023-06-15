@@ -53,13 +53,13 @@ model.load_state_dict(torch.load(root_folder + 'finetune/checkpoint/best_ftc_mod
 app = Flask(__name__)
 
 
-@app.route('/', methods=['POST'])
+@app.route('/', methods=['POST', 'GET'])
 def predict():
     if request.method == 'POST':
         # Get request data
-        data = request.json
-        tweet= data["tweet"]
-#         tweet = "Some shots from my shoot for F.I.T. Studio. Coach Fred"
+        # data = request.json
+        # tweet= data["tweet"]
+        tweet = request.args.get('tweet')
         encoded_tweet = tokenizer.encode_plus(
             tweet,
             max_length=MAX_LEN,
